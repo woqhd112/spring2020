@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
 
 		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
@@ -18,16 +18,32 @@
 			<property name="loginTimeout" value=""/>
 			-->
 		</bean>
-
+		
+		
 		<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 			<property name="dataSource" ref="dataSource"/>
 		</bean>
+		
 
+		<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+			<property name="dataSource" ref="dataSource"/>
+			<property name="configLocation" value="classpath:/sqlMapConfig.xml"/>
+		</bean>
 	
-		<bean id="deptDao" class="com.bit.project02.dept.model.DeptDaoImpl1"/>
+		<bean id="sqlMapClientTemplate" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
+			<property name="sqlMapClient" ref="sqlMapClient"></property>
+		</bean>
+		
+		<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+			<property name="dataSource" ref="dataSource"></property>
+		</bean>
+		
+		<bean id="deptDao" class="com.bit.project02.dept.model.DeptDaoImpl2"/>
+		
+		
 		
 		<!-- 다오 안에 오토와이어를 등록한것을 인식할수있게 해주는것
-		<mvc:annotation-driven></mvc:annotation-driven>
+		<context:annotation-config></context:annotation-config> 이건 서블릿xml에서도 등록이 되있어서 양쪽다 실행되므로 하지않는게좋음
 		 -->
 		<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
 			

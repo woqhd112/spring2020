@@ -12,6 +12,8 @@ import com.bit.project02.dept.model.entity.DeptVo;
 
 public class DeptDaoImpl1 implements DeptDao {
 	
+	//오토와이어는 생성자는안되고 셋터로 해야적용됨 필드값에 등록하고 셋터를 없어도됨(알아서 강제적으로 만듦)
+	@Autowired
 	JdbcTemplate jdbcTemplate;
 	private RowMapper<DeptVo> rowMapper;
 	
@@ -27,16 +29,36 @@ public class DeptDaoImpl1 implements DeptDao {
 		};
 	}
 	
-	@Autowired
-	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
-	}
 
 	@Override
 	public List<DeptVo> selectAll() {
 		
 		String sql="select * from dept01";
 		return jdbcTemplate.query(sql, rowMapper);
+	}
+
+
+	@Override
+	public void insertOne(String dname, String loc) {
+		
+		String sql="insert into dept01 (dname,loc) values (?,?)";
+		jdbcTemplate.update(sql, dname,loc);
+	}
+
+
+	@Override
+	public DeptVo selectOne(int key) {
+		
+		String sql="select * from dept01 where deptno=?";
+		return jdbcTemplate.queryForObject(sql, rowMapper, key);
+	}
+
+
+	@Override
+	public int updateOne(int deptno, String dname, String loc) {
+		
+		String sql="update dept01 set dname=?,loc=? where deptno=?";
+		return jdbcTemplate.update(sql, dname,loc,deptno);
 	}
 
 }
