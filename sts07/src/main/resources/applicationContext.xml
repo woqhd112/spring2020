@@ -25,20 +25,31 @@
 		</bean>
 		
 
-		<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<!-- <bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
 			<property name="dataSource" ref="dataSource"/>
 			<property name="configLocation" value="classpath:/sqlMapConfig.xml"/>
 		</bean>
 	
 		<bean id="sqlMapClientTemplate" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
 			<property name="sqlMapClient" ref="sqlMapClient"></property>
+		</bean> -->
+		
+		<!-- 마이바티스 객체생성 -->
+		<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+			<property name="dataSource" ref="dataSource"/>
+			<property name="configLocation" value="classpath:/mybatis-config.xml"/>
+		</bean>
+		<!-- sqlsession 생성 -->
+		<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+			<constructor-arg ref="sqlSessionFactory"/>
 		</bean>
 		
+		<!-- 트랜잭션 -->
 		<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 			<property name="dataSource" ref="dataSource"></property>
 		</bean>
 		
-		<bean id="deptDao" class="com.bit.project02.dept.model.DeptDaoImpl2"/>
+		<bean id="deptDao" class="com.bit.project02.dept.model.DeptDaoImpl3"/>
 		
 		
 		
