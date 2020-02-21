@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+<mapper namespace="emp">
+  <select id="selectAll" resultType="empBean">
+  	select * from emp01 order by sabun desc
+  </select>
+  <insert id="insertOne" parameterType="empBean">
+  	insert into emp01 (name,nalja,pay,deptno) values (#{name},now(),#{pay},1)
+  </insert>
+  <select id="selectOne" parameterType="int" resultType="empBean">
+  	select * from emp01 where sabun=#{value}
+  </select>
+  <update id="updateOne" parameterType="empBean">
+  	update emp01 set name=#{name},pay=#{pay} where sabun=#{sabun}
+  </update>
+  <delete id="deleteOne" parameterType="int">
+  	delete from emp01 where sabun=#{value}
+  </delete>
+  <update id="updatePay" parameterType="int">
+  	update emp01 set pay=pay+1 where sabun=#{value}
+  </update>
+  <select id="selectTotal" resultType="Integer">
+  	select count(*) from emp01
+  </select>
+</mapper>
