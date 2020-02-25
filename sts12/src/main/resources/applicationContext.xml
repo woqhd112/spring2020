@@ -10,9 +10,41 @@
 	<!-- 
 	<bean id="service" class="com.bit.sts12.service.EmpServiceImpl"></bean>
 	 -->
-	<!-- 컴퍼넌트 어노테이션을 상속받는 모든 어노테이션을 패키지에 적용시킴 -->
+	<!-- 컴퍼넌트 어노테이션을 상속받는 모든 어노테이션을 패키지에 적용시킴 
 	<context:component-scan base-package="com.bit.sts12"></context:component-scan>
+	-->
 	
+	<context:component-scan base-package="com.bit.sts12.service"></context:component-scan>
 	<!-- 프록시객체 자동생성 -->
 	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+
+
+
+	
+	
+	<!-- xml로 aop 처리방법 -->
+	<bean id="beforeAop" class="com.bit.sts12.util.BeforeAop"></bean>
+	<bean id="afterAop" class="com.bit.sts12.util.AfterAop"></bean>
+	<bean id="aroundAop" class="com.bit.sts12.util.AroundAop"></bean>
+	<bean id="afterReturnAop" class="com.bit.sts12.util.AfterReturnAop"></bean>
+	<aop:config>
+		<aop:aspect ref="beforeAop">
+			<aop:pointcut expression="execution(* com.bit.sts12.service.EmpService.select*(..))" id="before"/>
+			<aop:before method="before" pointcut-ref="before"/>		
+		</aop:aspect>		
+		<aop:aspect ref="afterAop">
+			<aop:pointcut expression="execution(* com.bit.sts12.service.EmpService.*One(..))" id="OneAfter"/>
+			<aop:after method="after" pointcut-ref="OneAfter"/>
+		</aop:aspect>
+		<aop:aspect ref="aroundAop">
+			<aop:pointcut expression="execution(* com.bit.sts12.service.EmpService.deleteOne(..))" id="del"/>
+			<aop:around method="around" pointcut-ref="del"/>
+		</aop:aspect>
+		<aop:aspect ref="afterReturnAop">
+			<aop:pointcut expression="execution(* com.bit.sts12.service.EmpService.update*(..))" id="update"/>			
+			<aop:after-returning method="after" returning="result" pointcut-ref="update"/>
+		</aop:aspect>
+	</aop:config>
+	
+	
 </beans>
